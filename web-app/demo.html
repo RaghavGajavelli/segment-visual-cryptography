@@ -467,20 +467,20 @@
         <h2 class="card-title">Enter Your PIN</h2>
       </div>
 
-      <div class="pin-display">
-        <div class="pin-box" id="d0"></div>
-        <div class="pin-box" id="d1"></div>
-        <div class="pin-box" id="d2"></div>
-        <div class="pin-box" id="d3"></div>
+      <div class="pin-display" role="group" aria-label="PIN digit display">
+        <div class="pin-box" id="d0" aria-label="First digit"></div>
+        <div class="pin-box" id="d1" aria-label="Second digit"></div>
+        <div class="pin-box" id="d2" aria-label="Third digit"></div>
+        <div class="pin-box" id="d3" aria-label="Fourth digit"></div>
       </div>
 
       <div class="input-wrapper">
-        <input type="text" id="pinInput" maxlength="4" placeholder="0000" inputmode="numeric" autocomplete="off">
+        <input type="text" id="pinInput" maxlength="4" placeholder="0000" inputmode="numeric" autocomplete="off" aria-label="Enter 4-digit PIN">
       </div>
 
       <div class="btn-row">
-        <button class="btn btn-primary" id="generateBtn" disabled>Generate Shares</button>
-        <button class="btn btn-secondary" id="clearBtn">Clear</button>
+        <button class="btn btn-primary" id="generateBtn" disabled aria-label="Generate cryptographic shares from PIN">Generate Shares</button>
+        <button class="btn btn-secondary" id="clearBtn" aria-label="Clear PIN input">Clear</button>
       </div>
     </section>
 
@@ -496,20 +496,20 @@
         <p>Each share alone reveals nothing about your PIN</p>
       </div>
 
-      <div class="shares-grid">
+      <div class="shares-grid" role="group" aria-label="Generated cryptographic shares">
         <div class="share-item">
-          <div class="share-label">
+          <div class="share-label" id="share1Label">
             <span class="share-dot dot-orange"></span>
             Share 1
           </div>
-          <canvas id="share1Canvas" width="420" height="180"></canvas>
+          <canvas id="share1Canvas" width="420" height="180" role="img" aria-labelledby="share1Label" aria-description="First cryptographic share - appears as random noise"></canvas>
         </div>
         <div class="share-item">
-          <div class="share-label">
+          <div class="share-label" id="share2Label">
             <span class="share-dot dot-purple"></span>
             Share 2
           </div>
-          <canvas id="share2Canvas" width="420" height="180"></canvas>
+          <canvas id="share2Canvas" width="420" height="180" role="img" aria-labelledby="share2Label" aria-description="Second cryptographic share - appears as random noise"></canvas>
         </div>
       </div>
     </section>
@@ -521,25 +521,25 @@
         <h2 class="card-title">Reveal the PIN</h2>
       </div>
 
-      <div class="animation-area" id="animArea">
-        <div class="float-label" id="floatLabel1">Share 1</div>
-        <div class="float-label" id="floatLabel2">Share 2</div>
-        <div class="float-label" id="floatLabelResult">Result</div>
-        <canvas id="animShare1" width="420" height="180"></canvas>
-        <canvas id="animShare2" width="420" height="180"></canvas>
-        <canvas id="animResult" width="420" height="180"></canvas>
+      <div class="animation-area" id="animArea" role="region" aria-label="Share stacking animation">
+        <div class="float-label" id="floatLabel1" aria-hidden="true">Share 1</div>
+        <div class="float-label" id="floatLabel2" aria-hidden="true">Share 2</div>
+        <div class="float-label" id="floatLabelResult" aria-hidden="true">Result</div>
+        <canvas id="animShare1" width="420" height="180" role="img" aria-label="Animated Share 1"></canvas>
+        <canvas id="animShare2" width="420" height="180" role="img" aria-label="Animated Share 2"></canvas>
+        <canvas id="animResult" width="420" height="180" role="img" aria-label="Revealed PIN result"></canvas>
       </div>
 
-      <div class="status">
+      <div class="status" role="status" aria-live="polite">
         <span class="status-text" id="statusText"></span>
       </div>
 
       <div class="toggle-container">
-        <button class="toggle-btn stack-mode" id="toggleBtn">
-          <span class="icon">⊕</span>
+        <button class="toggle-btn stack-mode" id="toggleBtn" aria-label="Stack shares to reveal PIN">
+          <span class="icon" aria-hidden="true">⊕</span>
           <span class="label">Stack Shares</span>
         </button>
-        <button class="btn-reset" id="resetBtn">Start Over</button>
+        <button class="btn-reset" id="resetBtn" aria-label="Start over with new PIN">Start Over</button>
       </div>
     </section>
   </div>
@@ -615,10 +615,18 @@
       generateBtn.disabled = value.length !== 4;
     }
 
+    // Cryptographically secure random bit generator
+    function secureRandomBit() {
+      const array = new Uint8Array(1);
+      crypto.getRandomValues(array);
+      return array[0] % 2;
+    }
+
     function generateShares() {
       if (currentPIN.length !== 4) return;
 
-      randomPositions = Array.from({ length: 7 }, () => Math.round(Math.random()));
+      // Use cryptographically secure random generation
+      randomPositions = Array.from({ length: 7 }, () => secureRandomBit());
 
       share1Data = [];
       share2Data = [];
@@ -709,11 +717,13 @@
         toggleBtn.classList.add('separate-mode');
         icon.textContent = '⊖';
         label.textContent = 'Separate Shares';
+        toggleBtn.setAttribute('aria-label', 'Separate shares to hide PIN');
       } else {
         toggleBtn.classList.remove('separate-mode');
         toggleBtn.classList.add('stack-mode');
         icon.textContent = '⊕';
         label.textContent = 'Stack Shares';
+        toggleBtn.setAttribute('aria-label', 'Stack shares to reveal PIN');
       }
     }
 

@@ -40,11 +40,27 @@ export const DIGIT_SEGMENTS = {
 export const SEGMENT_COUNT = 7;
 
 /**
+ * Generates a cryptographically secure random bit (0 or 1)
+ * Uses crypto.getRandomValues() for true randomness
+ * @returns {number} 0 or 1
+ */
+function secureRandomBit() {
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    const array = new Uint8Array(1);
+    crypto.getRandomValues(array);
+    return array[0] % 2;
+  }
+  // Fallback for environments without crypto API (e.g., some test runners)
+  return Math.round(Math.random());
+}
+
+/**
  * Generates a random array of positions (0 or 1) for each segment
+ * Uses cryptographically secure random generation
  * @returns {number[]} Array of 7 random values (0 or 1)
  */
 export function generateRandomPositions() {
-  return Array.from({ length: SEGMENT_COUNT }, () => Math.round(Math.random()));
+  return Array.from({ length: SEGMENT_COUNT }, () => secureRandomBit());
 }
 
 /**

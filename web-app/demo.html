@@ -559,14 +559,16 @@
       '9': [true,  true,  true,  true,  false, true,  true]
     };
 
+    // Segment thickness: 0.06 * digitWidth = 5.4px for vertical
+    // For horizontal, use 0.036 * digitHeight = 5.4px (same thickness)
     const SEGMENTS = [
-      { name: 'top',         x: 0.15, y: 0.08, w: 0.7,  h: 0.06, horiz: true,  offsets: [0, 0.06] },
-      { name: 'rightTop',    x: 0.82, y: 0.14, w: 0.06, h: 0.32, horiz: false, offsets: [0, -0.06] },
-      { name: 'rightBottom', x: 0.82, y: 0.54, w: 0.06, h: 0.32, horiz: false, offsets: [0, -0.06] },
-      { name: 'bottom',      x: 0.15, y: 0.86, w: 0.7,  h: 0.06, horiz: true,  offsets: [0, -0.06] },
-      { name: 'leftBottom',  x: 0.12, y: 0.54, w: 0.06, h: 0.32, horiz: false, offsets: [0, 0.06] },
-      { name: 'leftTop',     x: 0.12, y: 0.14, w: 0.06, h: 0.32, horiz: false, offsets: [0, 0.06] },
-      { name: 'middle',      x: 0.15, y: 0.47, w: 0.7,  h: 0.06, horiz: true,  offsets: [0, 0.06] }
+      { name: 'top',         x: 0.15, y: 0.08, w: 0.7,  h: 0.036, horiz: true,  offsets: [0, 0.036] },
+      { name: 'rightTop',    x: 0.82, y: 0.12, w: 0.06, h: 0.34,  horiz: false, offsets: [0, -0.06] },
+      { name: 'rightBottom', x: 0.82, y: 0.54, w: 0.06, h: 0.34,  horiz: false, offsets: [0, -0.06] },
+      { name: 'bottom',      x: 0.15, y: 0.89, w: 0.7,  h: 0.036, horiz: true,  offsets: [0, -0.036] },
+      { name: 'leftBottom',  x: 0.12, y: 0.54, w: 0.06, h: 0.34,  horiz: false, offsets: [0, 0.06] },
+      { name: 'leftTop',     x: 0.12, y: 0.12, w: 0.06, h: 0.34,  horiz: false, offsets: [0, 0.06] },
+      { name: 'middle',      x: 0.15, y: 0.482, w: 0.7, h: 0.036, horiz: true,  offsets: [0, 0.036] }
     ];
 
     // State

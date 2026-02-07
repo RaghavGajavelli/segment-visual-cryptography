@@ -5,6 +5,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.Image;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.imageio.ImageIO;
@@ -67,18 +68,18 @@ public class Randomshares extends JFrame
         this.setLocation(250, 50);
         this.setResizable(false);
         this.setTitle("Shares 1 & 2");
-        this.jfc = new JFileChooser("C:\\");
-        (this.background = new ImagePanel(new ImageIcon(".\\images\\grunge_4.jpg").getImage())).setLayout(null);
+        this.jfc = new JFileChooser(System.getProperty("user.home"));
+        (this.background = new ImagePanel(new ImageIcon("./images/grunge_4.jpg").getImage())).setLayout(null);
         this.background.setBounds(1, 1, 2000, 2000);
         this.Imagelab1 = new JLabel("", 0);
         (this.info = new JLabel("Right click on shares to SAVE")).setForeground(new Color(63, 90, 111));
         this.info.setFont(new Font("DigifaceWide", 0, 12));
-        (this.hand = new JLabel("")).setIcon(new ImageIcon(".\\images\\share.gif"));
-        final ImageIcon imageIcon = new ImageIcon(".\\images\\blackbg.jpg");
+        (this.hand = new JLabel("")).setIcon(new ImageIcon("./images/share.gif"));
+        final ImageIcon imageIcon = new ImageIcon("./images/blackbg.jpg");
         this.Imagelab1.setIcon(imageIcon);
         this.Imagelab1.setToolTipText("Right Click on Share1 to Save.");
-        (this.prev = new JButton("", new ImageIcon(".\\images\\leftcirclearrow.jpg"))).setToolTipText("Back One Level");
-        (this.home = new JButton("", new ImageIcon(".\\images\\button-homemin.jpg"))).setToolTipText("Back Home");
+        (this.prev = new JButton("", new ImageIcon("./images/leftcirclearrow.jpg"))).setToolTipText("Back One Level");
+        (this.home = new JButton("", new ImageIcon("./images/button-homemin.jpg"))).setToolTipText("Back Home");
         this.home.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
         (this.share1lab = new JLabel("Share 1: ")).setForeground(new Color(63, 90, 111));
         this.share1lab.setFont(new Font("DigifaceWide", 1, 11));
@@ -135,13 +136,13 @@ public class Randomshares extends JFrame
         this.home.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(final MouseEvent mouseEvent) {
-                Randomshares.this.home.setIcon(new ImageIcon(".\\images\\button-home.jpg "));
+                Randomshares.this.home.setIcon(new ImageIcon("./images/button-home.jpg "));
                 Randomshares.this.home.setBounds(490, 510, 69, 70);
             }
             
             @Override
             public void mouseExited(final MouseEvent mouseEvent) {
-                Randomshares.this.home.setIcon(new ImageIcon(".\\images\\button-homemin.jpg"));
+                Randomshares.this.home.setIcon(new ImageIcon("./images/button-homemin.jpg"));
                 Randomshares.this.home.setBounds(500, 510, 55, 56);
             }
         });
@@ -150,17 +151,22 @@ public class Randomshares extends JFrame
             public void mouseClicked(final MouseEvent mouseEvent) {
                 if (mouseEvent.getButton() == 3) {
                     try {
-                        Randomshares.this.jfc.setFileSelectionMode(2);
+                        Randomshares.this.jfc.setFileSelectionMode(0);
                         if (Randomshares.this.jfc.showSaveDialog(Randomshares.this.Imagelab1) == 0) {
                             Randomshares.this.path = Randomshares.this.jfc.getSelectedFile().getAbsolutePath();
-                            final BufferedImage bufferedImage = new BufferedImage(70, 70, 2);
+                            if (!Randomshares.this.path.toLowerCase().endsWith(".png")) {
+                                Randomshares.this.path += ".png";
+                            }
                             System.out.println(Randomshares.this.path);
                             final File output = new File(Randomshares.this.path);
                             try {
-                                final Dimension preferredSize = Randomshares.this.Imagelab1.getPreferredSize();
-                                final Image image = Randomshares.this.Imagelab1.createImage(preferredSize.width, preferredSize.height);
-                                Randomshares.this.Imagelab1.paint(image.getGraphics());
-                                ImageIO.write((RenderedImage)image, "jpg", output);
+                                final int width = Randomshares.this.Imagelab1.getWidth();
+                                final int height = Randomshares.this.Imagelab1.getHeight();
+                                final BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+                                final Graphics2D g2d = bufferedImage.createGraphics();
+                                Randomshares.this.Imagelab1.paint(g2d);
+                                g2d.dispose();
+                                ImageIO.write(bufferedImage, "png", output);
                                 Randomshares.this.flag1 = 1;
                                 if (Randomshares.this.flag1 == 1 && Randomshares.this.flag2 == 1) {
                                     JOptionPane.showMessageDialog(Randomshares.this.Imagelab1, "Shares saved at desired location ", " ", 1);
@@ -183,17 +189,22 @@ public class Randomshares extends JFrame
             public void mouseClicked(final MouseEvent mouseEvent) {
                 if (mouseEvent.getButton() == 3) {
                     try {
-                        Randomshares.this.jfc.setFileSelectionMode(2);
+                        Randomshares.this.jfc.setFileSelectionMode(0);
                         if (Randomshares.this.jfc.showSaveDialog(Randomshares.this.Imagelab2) == 0) {
                             Randomshares.this.path = Randomshares.this.jfc.getSelectedFile().getAbsolutePath();
-                            final BufferedImage bufferedImage = new BufferedImage(70, 70, 2);
+                            if (!Randomshares.this.path.toLowerCase().endsWith(".png")) {
+                                Randomshares.this.path += ".png";
+                            }
                             System.out.println(Randomshares.this.path);
                             final File output = new File(Randomshares.this.path);
                             try {
-                                final Dimension preferredSize = Randomshares.this.Imagelab2.getPreferredSize();
-                                final Image image = Randomshares.this.Imagelab2.createImage(preferredSize.width, preferredSize.height);
-                                Randomshares.this.Imagelab2.paint(image.getGraphics());
-                                ImageIO.write((RenderedImage)image, "jpg", output);
+                                final int width = Randomshares.this.Imagelab2.getWidth();
+                                final int height = Randomshares.this.Imagelab2.getHeight();
+                                final BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+                                final Graphics2D g2d = bufferedImage.createGraphics();
+                                Randomshares.this.Imagelab2.paint(g2d);
+                                g2d.dispose();
+                                ImageIO.write(bufferedImage, "png", output);
                                 Randomshares.this.flag2 = 1;
                                 if (Randomshares.this.flag1 == 1 && Randomshares.this.flag2 == 1) {
                                     JOptionPane.showMessageDialog(Randomshares.this.Imagelab2, "Shares saved at desired location ", " ", 1);
@@ -215,17 +226,29 @@ public class Randomshares extends JFrame
             @Override
             public void windowClosing(final WindowEvent windowEvent) {
                 try {
-                    final File output = new File("C:/recovered/share1.jpg");
-                    final File output2 = new File("C:/recovered/share2.jpg");
-                    final Dimension preferredSize = Randomshares.this.Imagelab1.getPreferredSize();
-                    final Image image = Randomshares.this.Imagelab1.createImage(preferredSize.width, preferredSize.height);
-                    Randomshares.this.Imagelab1.paint(image.getGraphics());
-                    ImageIO.write((RenderedImage)image, "jpg", output);
-                    final Dimension preferredSize2 = Randomshares.this.Imagelab2.getPreferredSize();
-                    final Image image2 = Randomshares.this.Imagelab2.createImage(preferredSize2.width, preferredSize2.height);
-                    Randomshares.this.Imagelab2.paint(image2.getGraphics());
-                    ImageIO.write((RenderedImage)image2, "jpg", output2);
-                    JOptionPane.showMessageDialog(Randomshares.this.Imagelab2, "Shares saved at default location C:/recovered/ ", " ", 1);
+                    final String homeDir = System.getProperty("user.home");
+                    final File recoveredDir = new File(homeDir, "recovered");
+                    recoveredDir.mkdirs();
+                    final File output = new File(recoveredDir, "share1.png");
+                    final File output2 = new File(recoveredDir, "share2.png");
+
+                    final int width1 = Randomshares.this.Imagelab1.getWidth();
+                    final int height1 = Randomshares.this.Imagelab1.getHeight();
+                    final BufferedImage bufferedImage1 = new BufferedImage(width1, height1, BufferedImage.TYPE_INT_ARGB);
+                    final Graphics2D g2d1 = bufferedImage1.createGraphics();
+                    Randomshares.this.Imagelab1.paint(g2d1);
+                    g2d1.dispose();
+                    ImageIO.write(bufferedImage1, "png", output);
+
+                    final int width2 = Randomshares.this.Imagelab2.getWidth();
+                    final int height2 = Randomshares.this.Imagelab2.getHeight();
+                    final BufferedImage bufferedImage2 = new BufferedImage(width2, height2, BufferedImage.TYPE_INT_ARGB);
+                    final Graphics2D g2d2 = bufferedImage2.createGraphics();
+                    Randomshares.this.Imagelab2.paint(g2d2);
+                    g2d2.dispose();
+                    ImageIO.write(bufferedImage2, "png", output2);
+
+                    JOptionPane.showMessageDialog(Randomshares.this.Imagelab2, "Shares saved at default location " + homeDir + "/recovered/ ", " ", 1);
                 }
                 catch (final Exception ex) {
                     ex.printStackTrace();

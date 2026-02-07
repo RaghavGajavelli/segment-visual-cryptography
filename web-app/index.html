@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SBVC - Segment Based Visual Cryptography</title>
+  <meta name="description" content="A modern visual cryptography tool for encrypting numeric PINs using seven-segment displays">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="./src/css/styles.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="navbar-content">
+      <div class="navbar-brand" data-nav="home">
+        <span class="logo">VC</span>
+        <span>SBVC</span>
+      </div>
+      <ul class="navbar-nav">
+        <li><a class="nav-link" id="nav-encrypt">Encrypt</a></li>
+        <li><a class="nav-link" id="nav-decrypt">Decrypt</a></li>
+        <li><a class="nav-link" id="nav-about">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="app-container">
+
+    <!-- Home View -->
+    <section id="home-view" class="view active">
+      <div class="hero">
+        <h1>Visual Cryptography</h1>
+        <p class="subtitle">
+          Split your 4-digit PIN into two visual shares that individually reveal nothing,
+          but combined reveal your secret number.
+        </p>
+      </div>
+
+      <div class="cards-grid">
+        <div class="card" id="card-encrypt">
+          <div class="card-icon">🔒</div>
+          <h3>Encrypt</h3>
+          <p>Enter a 4-digit PIN and generate two encrypted visual shares</p>
+        </div>
+
+        <div class="card" id="card-decrypt">
+          <div class="card-icon">🔓</div>
+          <h3>Decrypt</h3>
+          <p>Load two shares and stack them to reveal the original PIN</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Encrypt View -->
+    <section id="encrypt-view" class="view">
+      <div class="encrypt-container">
+        <div class="section-title">
+          <h2>🔒 Encrypt PIN</h2>
+          <p>Enter your 4-digit PIN to generate encrypted shares</p>
+        </div>
+
+        <div class="pin-input-section">
+          <div class="pin-display">
+            <div class="pin-digit"></div>
+            <div class="pin-digit"></div>
+            <div class="pin-digit"></div>
+            <div class="pin-digit"></div>
+          </div>
+
+          <input
+            type="text"
+            id="pin-input"
+            class="hidden-input"
+            maxlength="4"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            autocomplete="off"
+            placeholder="Enter PIN"
+          >
+
+          <p class="pin-error" id="pin-error"></p>
+        </div>
+
+        <div class="preview-section">
+          <h4>Seven-Segment Preview</h4>
+          <div class="canvas-container">
+            <canvas id="pin-preview" width="350" height="160"></canvas>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-primary" id="generate-btn" disabled>
+            Generate Shares
+          </button>
+          <button class="btn btn-secondary" id="clear-btn">
+            Clear
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Shares View -->
+    <section id="shares-view" class="view">
+      <div class="shares-container">
+        <div class="section-title text-center">
+          <h2>🎉 Shares Generated!</h2>
+          <p>Download both shares separately. They can only reveal the PIN when combined.</p>
+        </div>
+
+        <div class="shares-grid">
+          <div class="share-card">
+            <h3>
+              <span class="share-badge share1">1</span>
+              Share 1
+            </h3>
+            <div class="share-canvas-wrapper">
+              <canvas id="share1-canvas" width="450" height="200"></canvas>
+            </div>
+            <button class="btn btn-outline" id="download-share1">
+              Download Share 1
+            </button>
+          </div>
+
+          <div class="share-card">
+            <h3>
+              <span class="share-badge share2">2</span>
+              Share 2
+            </h3>
+            <div class="share-canvas-wrapper">
+              <canvas id="share2-canvas" width="450" height="200"></canvas>
+            </div>
+            <button class="btn btn-outline" id="download-share2">
+              Download Share 2
+            </button>
+          </div>
+        </div>
+
+        <div class="shares-actions">
+          <button class="btn btn-secondary" id="back-to-encrypt">
+            ← Create New
+          </button>
+          <button class="btn btn-primary" id="download-both">
+            Download Both
+          </button>
+          <button class="btn btn-secondary" id="go-to-decrypt">
+            Test Decrypt →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Decrypt View -->
+    <section id="decrypt-view" class="view">
+      <div class="decrypt-container">
+        <div class="section-title text-center">
+          <h2>🔓 Decrypt PIN</h2>
+          <p>Load both shares and stack them to reveal the original PIN</p>
+        </div>
+
+        <div class="decrypt-grid">
+          <div class="load-card" id="load-card-1">
+            <h4>Share 1</h4>
+            <div class="preview-canvas">
+              <canvas id="share1-preview" width="230" height="100"></canvas>
+            </div>
+            <button class="btn btn-outline" id="load-share1">
+              Load Share 1
+            </button>
+            <input type="file" id="share1-input" accept=".json,.png,.jpg">
+            <p class="status-text" id="share1-status">No share loaded</p>
+          </div>
+
+          <div class="load-card" id="load-card-2">
+            <h4>Share 2</h4>
+            <div class="preview-canvas">
+              <canvas id="share2-preview" width="230" height="100"></canvas>
+            </div>
+            <button class="btn btn-outline" id="load-share2">
+              Load Share 2
+            </button>
+            <input type="file" id="share2-input" accept=".json,.png,.jpg">
+            <p class="status-text" id="share2-status">No share loaded</p>
+          </div>
+        </div>
+
+        <div class="result-section">
+          <h3>Stacked Result</h3>
+          <p class="text-muted">Click "Stack Shares" to reveal the hidden PIN</p>
+
+          <div class="result-canvas-wrapper">
+            <canvas id="result-canvas" width="450" height="200"></canvas>
+          </div>
+
+          <div class="button-group">
+            <button class="btn btn-primary" id="stack-btn" disabled>
+              Stack Shares
+            </button>
+            <button class="btn btn-secondary" id="reset-decrypt">
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About View -->
+    <section id="about-view" class="view">
+      <div class="about-container">
+        <div class="section-title text-center">
+          <h2>About SBVC</h2>
+          <p>Segment-Based Visual Cryptography</p>
+        </div>
+
+        <div class="about-section">
+          <h3>What is Visual Cryptography?</h3>
+          <p>
+            Visual cryptography is a cryptographic technique that allows visual information
+            (pictures, text, etc.) to be encrypted in such a way that decryption can be
+            performed by the human visual system, without the need for computers.
+          </p>
+          <p>
+            In this implementation, we use <strong>seven-segment displays</strong> (like those
+            on digital clocks) to represent numeric digits. The PIN is split into two "shares"
+            that individually look like random noise, but when overlaid reveal the original number.
+          </p>
+        </div>
+
+        <div class="about-section">
+          <h3>How It Works</h3>
+          <div class="segment-demo">
+            <div class="segment-digit">
+              <div class="digit">8</div>
+              <div class="label">All 7 segments</div>
+            </div>
+          </div>
+          <p>
+            Each digit is made up of 7 segments. For visual cryptography, each segment can be
+            drawn in one of two slightly offset positions:
+          </p>
+          <ul style="color: var(--text-secondary); margin-left: 1.5rem; margin-bottom: 1rem;">
+            <li><strong>Share 1 (Random):</strong> Each segment is randomly placed at position 0 or 1</li>
+            <li><strong>Share 2 (Complementary):</strong> For visible segments, use the same position as Share 1.
+                For hidden segments, use the opposite position.</li>
+          </ul>
+          <p>
+            When the shares are stacked:
+          </p>
+          <ul style="color: var(--text-secondary); margin-left: 1.5rem;">
+            <li><strong>Same position</strong> = segment clearly visible (ON)</li>
+            <li><strong>Different positions</strong> = segment appears gray/fuzzy (OFF)</li>
+          </ul>
+        </div>
+
+        <div class="about-section">
+          <h3>Security</h3>
+          <p>
+            Each share by itself reveals <strong>absolutely nothing</strong> about the original PIN.
+            Share 1 is pure random noise. Share 2 is designed specifically to complement Share 1
+            for the given PIN.
+          </p>
+          <p>
+            This means you can safely store or transmit the shares separately. Only someone
+            with access to <strong>both</strong> shares can reveal the secret.
+          </p>
+        </div>
+
+        <div class="about-section">
+          <h3>Technical Details</h3>
+          <p>
+            This is a modern web-based reimplementation of the original Java Swing application.
+            Built with vanilla JavaScript, HTML5 Canvas, and CSS3.
+          </p>
+          <ul style="color: var(--text-secondary); margin-left: 1.5rem;">
+            <li>No server required - runs entirely in your browser</li>
+            <li>No data is transmitted - all processing happens locally</li>
+            <li>Open source and auditable</li>
+          </ul>
+        </div>
+
+        <div class="text-center mt-lg">
+          <button class="btn btn-primary" data-nav="home">
+            Get Started
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts -->
+  <script type="module" src="./src/js/app.js"></script>
+</body>
+</html>

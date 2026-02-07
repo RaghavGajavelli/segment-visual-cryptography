@@ -10,13 +10,13 @@ import java.awt.event.MouseAdapter;
 class DisplayDigit$1 extends MouseAdapter {
     @Override
     public void mouseEntered(final MouseEvent mouseEvent) {
-        DisplayDigit.this.prev.setIcon(new ImageIcon(".\\images\\leftcirclearrow.jpg"));
+        DisplayDigit.this.prev.setIcon(new ImageIcon("./images/leftcirclearrow.jpg"));
         DisplayDigit.this.prev.setBounds(460, 380, 70, 70);
     }
     
     @Override
     public void mouseExited(final MouseEvent mouseEvent) {
-        DisplayDigit.this.prev.setIcon(new ImageIcon(".\\images\\leftcirclearrowmin.jpg"));
+        DisplayDigit.this.prev.setIcon(new ImageIcon("./images/leftcirclearrowmin.jpg"));
         DisplayDigit.this.prev.setBounds(470, 390, 55, 55);
     }
 }

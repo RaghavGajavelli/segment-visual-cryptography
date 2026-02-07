@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visual Cryptography</title>
+  <style>
+    :root {
+      --bg-primary: #000000;
+      --bg-secondary: #1c1c1e;
+      --bg-tertiary: #2c2c2e;
+      --bg-elevated: #3a3a3c;
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.6);
+      --text-tertiary: rgba(255, 255, 255, 0.4);
+      --accent: #0a84ff;
+      --accent-green: #30d158;
+      --share1-color: #ff9f0a;
+      --share2-color: #bf5af2;
+      --separator: rgba(255, 255, 255, 0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 40px 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-secondary);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .card-number {
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    /* PIN Input */
+    .pin-display {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .pin-box {
+      width: 64px;
+      height: 80px;
+      background: var(--bg-tertiary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .pin-box.active {
+      border-color: var(--accent);
+      background: var(--bg-elevated);
+    }
+
+    .pin-box.filled {
+      color: var(--accent-green);
+    }
+
+    .input-wrapper {
+      display: flex;
+      justify-content: center;
+    }
+
+    input[type="text"] {
+      width: 200px;
+      padding: 14px 20px;
+      font-size: 1.25rem;
+      text-align: center;
+      background: var(--bg-tertiary);
+      border: none;
+      border-radius: 12px;
+      color: var(--text-primary);
+      letter-spacing: 12px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    input:focus {
+      outline: none;
+      background: var(--bg-elevated);
+      box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.3);
+    }
+
+    input::placeholder {
+      color: var(--text-tertiary);
+      letter-spacing: 0;
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      filter: brightness(1.1);
+      transform: scale(1.02);
+    }
+
+    .btn-primary:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--bg-elevated);
+    }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Shares Display */
+    .shares-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 700px) {
+      .shares-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .share-item {
+      text-align: center;
+    }
+
+    .share-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .share-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-orange { background: var(--share1-color); }
+    .dot-purple { background: var(--share2-color); }
+
+    canvas {
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto;
+      /* Transparent checkered background like image editors */
+      background-image:
+        linear-gradient(45deg, #1a1a1a 25%, transparent 25%),
+        linear-gradient(-45deg, #1a1a1a 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #1a1a1a 75%),
+        linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+      background-color: #111;
+    }
+
+    canvas.solid-bg {
+      background: var(--bg-primary);
+      background-image: none;
+    }
+
+    /* Info Banner */
+    .info-banner {
+      background: rgba(48, 209, 88, 0.1);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .info-banner span {
+      font-size: 1.5rem;
+    }
+
+    .info-banner p {
+      color: var(--accent-green);
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    /* Animation Section */
+    .animation-area {
+      position: relative;
+      width: 420px;
+      height: 380px;
+      margin: 0 auto 24px;
+    }
+
+    .animation-area canvas {
+      position: absolute;
+      left: 0;
+      transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #animShare1 {
+      top: 0;
+      z-index: 2;
+    }
+
+    #animShare2 {
+      top: 200px;
+      z-index: 1;
+    }
+
+    #animResult {
+      top: 100px;
+      z-index: 3;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .animation-area.stacked #animShare1 {
+      top: 100px;
+      opacity: 0.6;
+    }
+
+    .animation-area.stacked #animShare2 {
+      top: 100px;
+      opacity: 0.6;
+    }
+
+    .animation-area.revealed #animShare1,
+    .animation-area.revealed #animShare2 {
+      opacity: 0;
+    }
+
+    .animation-area.revealed #animResult {
+      opacity: 1;
+      box-shadow: 0 0 60px rgba(48, 209, 88, 0.4);
+    }
+
+    /* Floating Labels */
+    .float-label {
+      position: absolute;
+      left: -70px;
+      width: 60px;
+      text-align: right;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #floatLabel1 { top: 80px; color: var(--share1-color); }
+    #floatLabel2 { top: 280px; color: var(--share2-color); }
+    #floatLabelResult { top: 180px; color: var(--accent-green); opacity: 0; }
+
+    .animation-area.stacked #floatLabel1 { top: 175px; opacity: 0.5; }
+    .animation-area.stacked #floatLabel2 { top: 185px; opacity: 0.5; }
+
+    .animation-area.revealed #floatLabel1,
+    .animation-area.revealed #floatLabel2 { opacity: 0; }
+    .animation-area.revealed #floatLabelResult { opacity: 1; }
+
+    /* Status Display */
+    .status {
+      text-align: center;
+      min-height: 32px;
+      margin-bottom: 24px;
+    }
+
+    .status-text {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--accent-green);
+    }
+
+    .status-text.processing {
+      color: var(--text-secondary);
+      animation: pulse 1s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Toggle Button - Apple Style */
+    .toggle-container {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .toggle-btn {
+      position: relative;
+      padding: 16px 32px;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+      min-width: 180px;
+    }
+
+    .toggle-btn.stack-mode {
+      background: linear-gradient(135deg, var(--accent), #0066cc);
+      color: white;
+    }
+
+    .toggle-btn.separate-mode {
+      background: linear-gradient(135deg, var(--accent-green), #28a745);
+      color: white;
+    }
+
+    .toggle-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(10, 132, 255, 0.3);
+    }
+
+    .toggle-btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .toggle-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .toggle-btn .icon {
+      display: inline-block;
+      margin-right: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .toggle-btn:hover:not(:disabled) .icon {
+      transform: scale(1.1);
+    }
+
+    .btn-reset {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      padding: 16px 24px;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-reset:hover {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+    }
+
+    /* Hidden */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>Visual Cryptography</h1>
+      <p>Split a PIN into two shares that reveal nothing alone</p>
+    </header>
+
+    <!-- Step 1: Enter PIN -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-number">1</div>
+        <h2 class="card-title">Enter Your PIN</h2>
+      </div>
+
+      <div class="pin-display">
+        <div class="pin-box" id="d0"></div>
+        <div class="pin-box" id="d1"></div>
+        <div class="pin-box" id="d2"></div>
+        <div class="pin-box" id="d3"></div>
+      </div>
+
+      <div class="input-wrapper">
+        <input type="text" id="pinInput" maxlength="4" placeholder="0000" inputmode="numeric" autocomplete="off">
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="generateBtn" disabled>Generate Shares</button>
+        <button class="btn btn-secondary" id="clearBtn">Clear</button>
+      </div>
+    </section>
+
+    <!-- Step 2: Generated Shares -->
+    <section class="card hidden" id="sharesSection">
+      <div class="card-header">
+        <div class="card-number">2</div>
+        <h2 class="card-title">Generated Shares</h2>
+      </div>
+
+      <div class="info-banner">
+        <span>🔒</span>
+        <p>Each share alone reveals nothing about your PIN</p>
+      </div>
+
+      <div class="shares-grid">
+        <div class="share-item">
+          <div class="share-label">
+            <span class="share-dot dot-orange"></span>
+            Share 1
+          </div>
+          <canvas id="share1Canvas" width="420" height="180"></canvas>
+        </div>
+        <div class="share-item">
+          <div class="share-label">
+            <span class="share-dot dot-purple"></span>
+            Share 2
+          </div>
+          <canvas id="share2Canvas" width="420" height="180"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 3: Stack Animation -->
+    <section class="card hidden" id="resultSection">
+      <div class="card-header">
+        <div class="card-number">3</div>
+        <h2 class="card-title">Reveal the PIN</h2>
+      </div>
+
+      <div class="animation-area" id="animArea">
+        <div class="float-label" id="floatLabel1">Share 1</div>
+        <div class="float-label" id="floatLabel2">Share 2</div>
+        <div class="float-label" id="floatLabelResult">Result</div>
+        <canvas id="animShare1" width="420" height="180"></canvas>
+        <canvas id="animShare2" width="420" height="180"></canvas>
+        <canvas id="animResult" width="420" height="180"></canvas>
+      </div>
+
+      <div class="status">
+        <span class="status-text" id="statusText"></span>
+      </div>
+
+      <div class="toggle-container">
+        <button class="toggle-btn stack-mode" id="toggleBtn">
+          <span class="icon">⊕</span>
+          <span class="label">Stack Shares</span>
+        </button>
+        <button class="btn-reset" id="resetBtn">Start Over</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Seven-segment digit patterns
+    const DIGIT_SEGMENTS = {
+      '0': [true,  true,  true,  true,  true,  true,  false],
+      '1': [false, true,  true,  false, false, false, false],
+      '2': [true,  true,  false, true,  true,  false, true],
+      '3': [true,  true,  true,  true,  false, false, true],
+      '4': [false, true,  true,  false, false, true,  true],
+      '5': [true,  false, true,  true,  false, true,  true],
+      '6': [true,  false, true,  true,  true,  true,  true],
+      '7': [true,  true,  true,  false, false, false, false],
+      '8': [true,  true,  true,  true,  true,  true,  true],
+      '9': [true,  true,  true,  true,  false, true,  true]
+    };
+
+    const SEGMENTS = [
+      { name: 'top',         x: 0.15, y: 0.08, w: 0.7,  h: 0.06, horiz: true,  offsets: [0, 0.06] },
+      { name: 'rightTop',    x: 0.82, y: 0.14, w: 0.06, h: 0.32, horiz: false, offsets: [0, -0.06] },
+      { name: 'rightBottom', x: 0.82, y: 0.54, w: 0.06, h: 0.32, horiz: false, offsets: [0, -0.06] },
+      { name: 'bottom',      x: 0.15, y: 0.86, w: 0.7,  h: 0.06, horiz: true,  offsets: [0, -0.06] },
+      { name: 'leftBottom',  x: 0.12, y: 0.54, w: 0.06, h: 0.32, horiz: false, offsets: [0, 0.06] },
+      { name: 'leftTop',     x: 0.12, y: 0.14, w: 0.06, h: 0.32, horiz: false, offsets: [0, 0.06] },
+      { name: 'middle',      x: 0.15, y: 0.47, w: 0.7,  h: 0.06, horiz: true,  offsets: [0, 0.06] }
+    ];
+
+    // State
+    let currentPIN = '';
+    let randomPositions = [];
+    let share1Data = [];
+    let share2Data = [];
+    let isAnimating = false;
+    let isStacked = false;
+
+    // DOM Elements
+    const pinInput = document.getElementById('pinInput');
+    const generateBtn = document.getElementById('generateBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const toggleBtn = document.getElementById('toggleBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const sharesSection = document.getElementById('sharesSection');
+    const resultSection = document.getElementById('resultSection');
+    const animArea = document.getElementById('animArea');
+    const statusText = document.getElementById('statusText');
+
+    // Event Listeners
+    pinInput.addEventListener('input', handlePinInput);
+    generateBtn.addEventListener('click', generateShares);
+    clearBtn.addEventListener('click', clearAll);
+    toggleBtn.addEventListener('click', handleToggle);
+    resetBtn.addEventListener('click', clearAll);
+
+    function handlePinInput(e) {
+      let value = e.target.value.replace(/\D/g, '').slice(0, 4);
+      e.target.value = value;
+      currentPIN = value;
+
+      for (let i = 0; i < 4; i++) {
+        const el = document.getElementById('d' + i);
+        if (i < value.length) {
+          el.textContent = value[i];
+          el.classList.add('filled');
+        } else {
+          el.textContent = '';
+          el.classList.remove('filled');
+        }
+        el.classList.toggle('active', i === value.length);
+      }
+
+      generateBtn.disabled = value.length !== 4;
+    }
+
+    function generateShares() {
+      if (currentPIN.length !== 4) return;
+
+      randomPositions = Array.from({ length: 7 }, () => Math.round(Math.random()));
+
+      share1Data = [];
+      share2Data = [];
+
+      for (const digit of currentPIN) {
+        share1Data.push([...randomPositions]);
+        const segments = DIGIT_SEGMENTS[digit];
+        const share2 = segments.map((isOn, i) => isOn ? randomPositions[i] : 1 - randomPositions[i]);
+        share2Data.push(share2);
+      }
+
+      renderShare(document.getElementById('share1Canvas'), share1Data, '#ff9f0a');
+      renderShare(document.getElementById('share2Canvas'), share2Data, '#bf5af2');
+      renderShare(document.getElementById('animShare1'), share1Data, '#ff9f0a');
+      renderShare(document.getElementById('animShare2'), share2Data, '#bf5af2');
+
+      const resultCanvas = document.getElementById('animResult');
+      const ctx = resultCanvas.getContext('2d');
+      ctx.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
+
+      // Reset state
+      animArea.classList.remove('stacked', 'revealed');
+      statusText.textContent = '';
+      statusText.classList.remove('processing');
+      isStacked = false;
+      isAnimating = false;
+      updateToggleButton();
+
+      sharesSection.classList.remove('hidden');
+      resultSection.classList.remove('hidden');
+      resultSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function renderShare(canvas, data, color) {
+      const ctx = canvas.getContext('2d');
+      const digitWidth = 90;
+      const digitHeight = 150;
+      const spacing = 15;
+      const padding = 15;
+
+      // Clear with transparency for PNG export
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let d = 0; d < 4; d++) {
+        const x = padding + d * (digitWidth + spacing);
+        const y = padding;
+        const positions = data[d];
+
+        for (let s = 0; s < 7; s++) {
+          const seg = SEGMENTS[s];
+          const pos = positions[s];
+          const offset = seg.horiz
+            ? { x: 0, y: seg.offsets[pos] * digitHeight }
+            : { x: seg.offsets[pos] * digitWidth, y: 0 };
+
+          const sx = x + seg.x * digitWidth + offset.x;
+          const sy = y + seg.y * digitHeight + offset.y;
+          const sw = seg.w * digitWidth;
+          const sh = seg.h * digitHeight;
+
+          ctx.fillStyle = color;
+          ctx.shadowColor = color;
+          ctx.shadowBlur = 10;
+          ctx.beginPath();
+          ctx.roundRect(sx, sy, sw, sh, 3);
+          ctx.fill();
+        }
+      }
+      ctx.shadowBlur = 0;
+    }
+
+    function handleToggle() {
+      if (isAnimating) return;
+
+      if (isStacked) {
+        separateShares();
+      } else {
+        stackShares();
+      }
+    }
+
+    function updateToggleButton() {
+      const icon = toggleBtn.querySelector('.icon');
+      const label = toggleBtn.querySelector('.label');
+
+      if (isStacked) {
+        toggleBtn.classList.remove('stack-mode');
+        toggleBtn.classList.add('separate-mode');
+        icon.textContent = '⊖';
+        label.textContent = 'Separate Shares';
+      } else {
+        toggleBtn.classList.remove('separate-mode');
+        toggleBtn.classList.add('stack-mode');
+        icon.textContent = '⊕';
+        label.textContent = 'Stack Shares';
+      }
+    }
+
+    function stackShares() {
+      isAnimating = true;
+      toggleBtn.disabled = true;
+
+      statusText.textContent = 'Combining shares...';
+      statusText.classList.add('processing');
+      animArea.classList.add('stacked');
+
+      setTimeout(() => {
+        statusText.textContent = 'Revealing PIN...';
+        renderStackedResultAnimated();
+      }, 800);
+    }
+
+    function separateShares() {
+      isAnimating = true;
+      toggleBtn.disabled = true;
+
+      statusText.textContent = 'Separating shares...';
+      statusText.classList.add('processing');
+
+      // Remove revealed first, then stacked
+      animArea.classList.remove('revealed');
+
+      setTimeout(() => {
+        animArea.classList.remove('stacked');
+
+        // Clear result canvas
+        const resultCanvas = document.getElementById('animResult');
+        const ctx = resultCanvas.getContext('2d');
+        ctx.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
+
+        setTimeout(() => {
+          statusText.textContent = '';
+          statusText.classList.remove('processing');
+          isStacked = false;
+          isAnimating = false;
+          updateToggleButton();
+          toggleBtn.disabled = false;
+        }, 700);
+      }, 100);
+    }
+
+    function renderStackedResultAnimated() {
+      const canvas = document.getElementById('animResult');
+      const ctx = canvas.getContext('2d');
+      const digitWidth = 90;
+      const digitHeight = 150;
+      const spacing = 15;
+      const padding = 15;
+
+      const segmentsToReveal = [];
+      const segmentsGray = [];
+
+      for (let d = 0; d < 4; d++) {
+        const x = padding + d * (digitWidth + spacing);
+        const y = padding;
+
+        for (let s = 0; s < 7; s++) {
+          const seg = SEGMENTS[s];
+          const pos1 = share1Data[d][s];
+          const pos2 = share2Data[d][s];
+
+          if (pos1 === pos2) {
+            const offset = seg.horiz
+              ? { x: 0, y: seg.offsets[pos1] * digitHeight }
+              : { x: seg.offsets[pos1] * digitWidth, y: 0 };
+
+            segmentsToReveal.push({
+              x: x + seg.x * digitWidth + offset.x,
+              y: y + seg.y * digitHeight + offset.y,
+              w: seg.w * digitWidth,
+              h: seg.h * digitHeight
+            });
+          } else {
+            for (let p = 0; p < 2; p++) {
+              const offset = seg.horiz
+                ? { x: 0, y: seg.offsets[p] * digitHeight }
+                : { x: seg.offsets[p] * digitWidth, y: 0 };
+
+              segmentsGray.push({
+                x: x + seg.x * digitWidth + offset.x,
+                y: y + seg.y * digitHeight + offset.y,
+                w: seg.w * digitWidth,
+                h: seg.h * digitHeight
+              });
+            }
+          }
+        }
+      }
+
+      const duration = 1200;
+      const startTime = performance.now();
+
+      function animate(currentTime) {
+        const progress = Math.min((currentTime - startTime) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Dim non-contributing segments (very subtle, faded)
+        const grayAlpha = Math.min(progress * 1.5, 0.15);
+        ctx.fillStyle = `rgba(255, 255, 255, ${grayAlpha})`;
+        ctx.shadowBlur = 0;
+        for (const seg of segmentsGray) {
+          ctx.beginPath();
+          ctx.roundRect(seg.x, seg.y, seg.w, seg.h, 3);
+          ctx.fill();
+        }
+
+        // Bright, glowing PIN segments
+        ctx.fillStyle = `rgba(48, 209, 88, ${eased})`;
+        ctx.shadowColor = '#30d158';
+        ctx.shadowBlur = eased * 30;
+
+        for (const seg of segmentsToReveal) {
+          ctx.beginPath();
+          ctx.roundRect(seg.x, seg.y, seg.w, seg.h, 3);
+          ctx.fill();
+        }
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          animArea.classList.add('revealed');
+          statusText.textContent = `PIN: ${currentPIN}`;
+          statusText.classList.remove('processing');
+          isStacked = true;
+          isAnimating = false;
+          updateToggleButton();
+          toggleBtn.disabled = false;
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function clearAll() {
+      currentPIN = '';
+      pinInput.value = '';
+      for (let i = 0; i < 4; i++) {
+        const el = document.getElementById('d' + i);
+        el.textContent = '';
+        el.classList.remove('filled', 'active');
+      }
+      generateBtn.disabled = true;
+      sharesSection.classList.add('hidden');
+      resultSection.classList.add('hidden');
+      animArea.classList.remove('stacked', 'revealed');
+      statusText.textContent = '';
+      statusText.classList.remove('processing');
+      isAnimating = false;
+      isStacked = false;
+      updateToggleButton();
+    }
+  </script>
+</body>
+</html>

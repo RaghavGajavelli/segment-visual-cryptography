@@ -10,13 +10,13 @@ import java.awt.event.MouseAdapter;
 class DisplayDigit$2 extends MouseAdapter {
     @Override
     public void mouseEntered(final MouseEvent mouseEvent) {
-        DisplayDigit.this.home.setIcon(new ImageIcon(".\\images\\button-home.jpg "));
+        DisplayDigit.this.home.setIcon(new ImageIcon("./images/button-home.jpg "));
         DisplayDigit.this.home.setBounds(530, 390, 69, 70);
     }
     
     @Override
     public void mouseExited(final MouseEvent mouseEvent) {
-        DisplayDigit.this.home.setIcon(new ImageIcon(".\\images\\button-homemin.jpg"));
+        DisplayDigit.this.home.setIcon(new ImageIcon("./images/button-homemin.jpg"));
         DisplayDigit.this.home.setBounds(540, 390, 55, 56);
     }
 }

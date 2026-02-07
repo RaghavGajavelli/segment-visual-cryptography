@@ -78,7 +78,7 @@ public class Decrypt extends JFrame
         this.path = null;
         this.flag1 = 0;
         this.flag2 = 0;
-        (this.background = new ImagePanel(new ImageIcon(".\\images\\grunge_5.jpg").getImage())).setLayout(null);
+        (this.background = new ImagePanel(new ImageIcon("./images/grunge_5.jpg").getImage())).setLayout(null);
         this.setLayout(null);
         this.setLocation(250, 35);
         this.setResizable(false);
@@ -93,9 +93,9 @@ public class Decrypt extends JFrame
         (this.info = new JLabel("Right click on stacked image to SAVE")).setForeground(new Color(63, 90, 111));
         this.info.setFont(new Font("DigifaceWide", 0, 12));
         this.info.setVisible(false);
-        (this.uparrow = new JLabel("")).setIcon(new ImageIcon(".\\images\\uparrow.jpg"));
+        (this.uparrow = new JLabel("")).setIcon(new ImageIcon("./images/uparrow.jpg"));
         this.uparrow.setVisible(false);
-        (this.downarrow = new JLabel("")).setIcon(new ImageIcon(".\\images\\downarrow.jpg"));
+        (this.downarrow = new JLabel("")).setIcon(new ImageIcon("./images/downarrow.jpg"));
         this.downarrow.setVisible(false);
         (this.Browse1 = new JButton("Browse")).setFont(new Font("DigifaceWide", 1, 10));
         this.Browse1.setBackground(new Color(39, 143, 204));
@@ -103,13 +103,13 @@ public class Decrypt extends JFrame
         (this.Browse2 = new JButton("Browse")).setFont(new Font("DigifaceWide", 1, 10));
         this.Browse2.setBackground(new Color(39, 143, 204));
         this.Browse2.setForeground(new Color(255, 255, 255));
-        (this.stak = new JButton("")).setIcon(new ImageIcon(".\\images\\stackmin.png"));
-        (this.seperate = new JButton("")).setIcon(new ImageIcon(".\\images\\seperatemin.jpg"));
+        (this.stak = new JButton("")).setIcon(new ImageIcon("./images/stackmin.png"));
+        (this.seperate = new JButton("")).setIcon(new ImageIcon("./images/seperatemin.jpg"));
         this.seperate.setToolTipText("seperate shares");
         this.stak.setToolTipText("stack shares");
         this.stak.setEnabled(false);
         this.seperate.setVisible(false);
-        (this.home = new JButton("", new ImageIcon(".\\images\\button-homemin.jpg"))).setToolTipText("Back to Home.");
+        (this.home = new JButton("", new ImageIcon("./images/button-homemin.jpg"))).setToolTipText("Back to Home.");
         this.home.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
         this.Textarea1 = new JTextField(20);
         this.Textarea2 = new JTextField(20);
@@ -156,39 +156,39 @@ public class Decrypt extends JFrame
         this.stak.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(final MouseEvent mouseEvent) {
-                Decrypt.this.stak.setIcon(new ImageIcon(".\\images\\stack.jpg"));
+                Decrypt.this.stak.setIcon(new ImageIcon("./images/stack.jpg"));
                 Decrypt.this.stak.setBounds(240, 550, 103, 103);
             }
             
             @Override
             public void mouseExited(final MouseEvent mouseEvent) {
-                Decrypt.this.stak.setIcon(new ImageIcon(".\\images\\stackmin.png"));
+                Decrypt.this.stak.setIcon(new ImageIcon("./images/stackmin.png"));
                 Decrypt.this.stak.setBounds(250, 570, 50, 50);
             }
         });
         this.seperate.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(final MouseEvent mouseEvent) {
-                Decrypt.this.seperate.setIcon(new ImageIcon(".\\images\\seperate.jpg"));
+                Decrypt.this.seperate.setIcon(new ImageIcon("./images/seperate.jpg"));
                 Decrypt.this.seperate.setBounds(240, 560, 100, 56);
             }
             
             @Override
             public void mouseExited(final MouseEvent mouseEvent) {
-                Decrypt.this.seperate.setIcon(new ImageIcon(".\\images\\seperatemin.jpg"));
+                Decrypt.this.seperate.setIcon(new ImageIcon("./images/seperatemin.jpg"));
                 Decrypt.this.seperate.setBounds(250, 570, 80, 46);
             }
         });
         this.home.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(final MouseEvent mouseEvent) {
-                Decrypt.this.home.setIcon(new ImageIcon(".\\images\\button-home.jpg"));
+                Decrypt.this.home.setIcon(new ImageIcon("./images/button-home.jpg"));
                 Decrypt.this.home.setBounds(470, 570, 69, 70);
             }
             
             @Override
             public void mouseExited(final MouseEvent mouseEvent) {
-                Decrypt.this.home.setIcon(new ImageIcon(".\\images\\button-homemin.jpg"));
+                Decrypt.this.home.setIcon(new ImageIcon("./images/button-homemin.jpg"));
                 Decrypt.this.home.setBounds(480, 580, 55, 56);
             }
         });
@@ -283,7 +283,7 @@ public class Decrypt extends JFrame
         @Override
         public void actionPerformed(final ActionEvent actionEvent) {
             if (Decrypt.this.jfc == null) {
-                Decrypt.this.jfc = new JFileChooser("C:\\");
+                Decrypt.this.jfc = new JFileChooser(System.getProperty("user.home"));
             }
             else {
                 Decrypt.this.jfc = new JFileChooser(Decrypt.this.imagePath);
@@ -342,7 +342,7 @@ public class Decrypt extends JFrame
                     Decrypt.this.b2 = ImageIO.read(Decrypt.this.f2);
                     Decrypt.this.output = new BufferedImage(511, 219, 2);
                     Decrypt.this.stackOperation();
-                    Decrypt.this.of = new File(".\\images\\result.jpg");
+                    Decrypt.this.of = new File("./images/result.jpg");
                     ImageIO.write(Decrypt.this.output, "png", Decrypt.this.of);
                     Decrypt.this.resultbox.setIcon(new ImageIcon(Decrypt.this.output));
                 }

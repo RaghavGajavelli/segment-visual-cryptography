@@ -30,7 +30,7 @@ class Listen implements ActionListener
     @Override
     public void actionPerformed(final ActionEvent actionEvent) {
         if (Decrypt.this.jfc == null) {
-            Decrypt.this.jfc = new JFileChooser("C:\\");
+            Decrypt.this.jfc = new JFileChooser(System.getProperty("user.home"));
         }
         else {
             Decrypt.this.jfc = new JFileChooser(Decrypt.this.imagePath);
@@ -89,7 +89,7 @@ class Listen implements ActionListener
                 Decrypt.this.b2 = ImageIO.read(Decrypt.this.f2);
                 Decrypt.this.output = new BufferedImage(511, 219, 2);
                 Decrypt.this.stackOperation();
-                Decrypt.this.of = new File(".\\images\\result.jpg");
+                Decrypt.this.of = new File("./images/result.jpg");
                 ImageIO.write(Decrypt.this.output, "png", Decrypt.this.of);
                 Decrypt.this.resultbox.setIcon(new ImageIcon(Decrypt.this.output));
             }

@@ -10,13 +10,13 @@ import java.awt.event.MouseAdapter;
 class Decrypt$2 extends MouseAdapter {
     @Override
     public void mouseEntered(final MouseEvent mouseEvent) {
-        Decrypt.this.seperate.setIcon(new ImageIcon(".\\images\\seperate.jpg"));
+        Decrypt.this.seperate.setIcon(new ImageIcon("./images/seperate.jpg"));
         Decrypt.this.seperate.setBounds(240, 560, 100, 56);
     }
     
     @Override
     public void mouseExited(final MouseEvent mouseEvent) {
-        Decrypt.this.seperate.setIcon(new ImageIcon(".\\images\\seperatemin.jpg"));
+        Decrypt.this.seperate.setIcon(new ImageIcon("./images/seperatemin.jpg"));
         Decrypt.this.seperate.setBounds(250, 570, 80, 46);
     }
 }

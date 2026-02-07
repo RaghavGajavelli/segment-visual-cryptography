@@ -45,8 +45,8 @@ public class DisplayDigit extends JFrame
         this.a = a;
         this.Imagelab = new JLabel("");
         this.acadietimer = new JLabel("");
-        (this.background = new ImagePanel(new ImageIcon(".\\images\\grunge_3.jpg").getImage())).setLayout(null);
-        this.Imagelab.setIcon(new ImageIcon(".\\images\\blackbg.jpg"));
+        (this.background = new ImagePanel(new ImageIcon("./images/grunge_3.jpg").getImage())).setLayout(null);
+        this.Imagelab.setIcon(new ImageIcon("./images/blackbg.jpg"));
         this.background.setBounds(1, 1, 2000, 2000);
         this.Imagelab.setBounds(50, 18, 500, 300);
         (this.name = new JLabel(" The segment display of the number is:")).setFont(new Font("DigifaceWide", 0, 12));
@@ -58,11 +58,11 @@ public class DisplayDigit extends JFrame
         this.view_share.setBackground(new Color(39, 143, 204));
         this.view_share.setForeground(new Color(255, 255, 255));
         this.view_share.setFont(new Font("DigifaceWide", 0, 22));
-        (this.prev = new JButton("", new ImageIcon(".\\images\\leftcirclearrowmin.jpg"))).setToolTipText("Back one level.");
+        (this.prev = new JButton("", new ImageIcon("./images/leftcirclearrowmin.jpg"))).setToolTipText("Back one level.");
         this.prev.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
-        (this.home = new JButton("", new ImageIcon(".\\images\\button-homemin.jpg"))).setToolTipText("Back to Home.");
+        (this.home = new JButton("", new ImageIcon("./images/button-homemin.jpg"))).setToolTipText("Back to Home.");
         this.home.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
-        this.acadietimer.setIcon(new ImageIcon(".\\images\\sandtimer.gif"));
+        this.acadietimer.setIcon(new ImageIcon("./images/sandtimer.gif"));
         this.acadietimer.setVisible(false);
         this.gen_share.setBounds(50, 315, 270, 50);
         this.view_share.setBounds(340, 315, 270, 50);
@@ -107,26 +107,26 @@ public class DisplayDigit extends JFrame
         this.prev.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(final MouseEvent mouseEvent) {
-                DisplayDigit.this.prev.setIcon(new ImageIcon(".\\images\\leftcirclearrow.jpg"));
+                DisplayDigit.this.prev.setIcon(new ImageIcon("./images/leftcirclearrow.jpg"));
                 DisplayDigit.this.prev.setBounds(460, 380, 70, 70);
             }
             
             @Override
             public void mouseExited(final MouseEvent mouseEvent) {
-                DisplayDigit.this.prev.setIcon(new ImageIcon(".\\images\\leftcirclearrowmin.jpg"));
+                DisplayDigit.this.prev.setIcon(new ImageIcon("./images/leftcirclearrowmin.jpg"));
                 DisplayDigit.this.prev.setBounds(470, 390, 55, 55);
             }
         });
         this.home.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(final MouseEvent mouseEvent) {
-                DisplayDigit.this.home.setIcon(new ImageIcon(".\\images\\button-home.jpg "));
+                DisplayDigit.this.home.setIcon(new ImageIcon("./images/button-home.jpg "));
                 DisplayDigit.this.home.setBounds(530, 390, 69, 70);
             }
             
             @Override
             public void mouseExited(final MouseEvent mouseEvent) {
-                DisplayDigit.this.home.setIcon(new ImageIcon(".\\images\\button-homemin.jpg"));
+                DisplayDigit.this.home.setIcon(new ImageIcon("./images/button-homemin.jpg"));
                 DisplayDigit.this.home.setBounds(540, 390, 55, 56);
             }
         });

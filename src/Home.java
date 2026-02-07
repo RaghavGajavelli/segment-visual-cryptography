@@ -37,7 +37,7 @@ public class Home extends JFrame
         this.setLayout(null);
         this.setLocation(250, 50);
         this.setResizable(false);
-        (this.background = new ImagePanel(new ImageIcon(".\\images\\home.jpg").getImage())).setLayout(null);
+        (this.background = new ImagePanel(new ImageIcon("./images/home.jpg").getImage())).setLayout(null);
         this.l1 = new JLabel(" Segment Based Visual Cryptography ", 2);
         this.lock = new JLabel("");
         this.segdispimg = new JLabel("");
@@ -54,11 +54,11 @@ public class Home extends JFrame
         this.enc.setFont(new Font("DigifaceWide", 0, 22));
         this.dyc.setFont(new Font("DigifaceWide", 0, 22));
         this.l1.setForeground(new Color(34, 139, 234));
-        this.lock.setIcon(new ImageIcon(".\\images\\lockclosed.jpg"));
-        this.key.setIcon(new ImageIcon(".\\images\\lockopen.jpg"));
-        this.segdispimg.setIcon(new ImageIcon(".\\images\\Segdisplay.gif"));
-        final ImageIcon icon = new ImageIcon(".\\images\\crystalmin.jpg");
-        (this.help = new JButton("", new ImageIcon(".\\images\\HelpIconmin.jpg"))).setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
+        this.lock.setIcon(new ImageIcon("./images/lockclosed.jpg"));
+        this.key.setIcon(new ImageIcon("./images/lockopen.jpg"));
+        this.segdispimg.setIcon(new ImageIcon("./images/Segdisplay.gif"));
+        final ImageIcon icon = new ImageIcon("./images/crystalmin.jpg");
+        (this.help = new JButton("", new ImageIcon("./images/HelpIconmin.jpg"))).setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
         this.help.setToolTipText("Help");
         (this.exit = new JButton("", icon)).setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
         this.background.setBounds(1, 1, 2000, 2000);
@@ -114,26 +114,26 @@ public class Home extends JFrame
             @Override
             public void mouseEntered(final MouseEvent mouseEvent) {
                 Home.this.exit.setBounds(530, 390, 70, 70);
-                Home.this.exit.setIcon(new ImageIcon(".\\images\\crystal.jpg"));
+                Home.this.exit.setIcon(new ImageIcon("./images/crystal.jpg"));
             }
             
             @Override
             public void mouseExited(final MouseEvent mouseEvent) {
                 Home.this.exit.setBounds(540, 390, 50, 50);
-                Home.this.exit.setIcon(new ImageIcon(".\\images\\crystalmin.jpg"));
+                Home.this.exit.setIcon(new ImageIcon("./images/crystalmin.jpg"));
             }
         });
         this.help.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(final MouseEvent mouseEvent) {
                 Home.this.help.setBounds(440, 385, 80, 76);
-                Home.this.help.setIcon(new ImageIcon(".\\images\\HelpIcon.jpg"));
+                Home.this.help.setIcon(new ImageIcon("./images/HelpIcon.jpg"));
             }
             
             @Override
             public void mouseExited(final MouseEvent mouseEvent) {
                 Home.this.help.setBounds(450, 385, 60, 57);
-                Home.this.help.setIcon(new ImageIcon(".\\images\\HelpIconmin.jpg"));
+                Home.this.help.setIcon(new ImageIcon("./images/HelpIconmin.jpg"));
             }
         });
     }

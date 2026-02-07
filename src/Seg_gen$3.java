@@ -11,12 +11,12 @@ class Seg_gen$3 extends MouseAdapter {
     @Override
     public void mouseEntered(final MouseEvent mouseEvent) {
         Seg_gen.this.home.setBounds(440, 383, 70, 70);
-        Seg_gen.this.home.setIcon(new ImageIcon(".\\images\\leftcirclearrow.jpg"));
+        Seg_gen.this.home.setIcon(new ImageIcon("./images/leftcirclearrow.jpg"));
     }
     
     @Override
     public void mouseExited(final MouseEvent mouseEvent) {
-        Seg_gen.this.home.setIcon(new ImageIcon(".\\images\\leftcirclearrowmin.jpg"));
+        Seg_gen.this.home.setIcon(new ImageIcon("./images/leftcirclearrowmin.jpg"));
         Seg_gen.this.home.setBounds(450, 393, 55, 55);
     }
 }

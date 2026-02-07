@@ -42,7 +42,7 @@ public class Seg_gen extends JFrame
         this.setLayout(null);
         this.setLocation(250, 50);
         this.setResizable(false);
-        this.background = new ImagePanel(new ImageIcon(".\\images\\grunge_segdisplay.jpg").getImage());
+        this.background = new ImagePanel(new ImageIcon("./images/grunge_segdisplay.jpg").getImage());
         this.setTitle("SEGMENT GENERATION");
         this.Imagelab = new JLabel("");
         (this.here = new JLabel("here")).setFont(new Font("Tahoma", 1, 15));
@@ -56,14 +56,14 @@ public class Seg_gen extends JFrame
         this.clear.setForeground(new Color(255, 255, 255));
         this.clear.setFont(new Font("DigifaceWide", 0, 22));
         this.exit = new JButton("");
-        final ImageIcon imageIcon = new ImageIcon(".\\images\\closemin.jpg");
+        final ImageIcon imageIcon = new ImageIcon("./images/closemin.jpg");
         this.exit.setIcon(imageIcon);
         this.exit.setToolTipText("Exit");
         this.exit.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
         this.Imagelab.setIcon(imageIcon);
         this.namefield = new JTextField(20);
-        this.Imagelab.setIcon(new ImageIcon(".\\images\\point.jpg"));
-        (this.home = new JButton("", new ImageIcon(".\\images\\leftcirclearrowmin.jpg"))).setToolTipText("Back to Home.");
+        this.Imagelab.setIcon(new ImageIcon("./images/point.jpg"));
+        (this.home = new JButton("", new ImageIcon("./images/leftcirclearrowmin.jpg"))).setToolTipText("Back to Home.");
         this.home.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
         this.background.setBounds(1, 1, 2000, 2000);
         this.here.setBounds(362, 80, 50, 25);
@@ -114,12 +114,12 @@ public class Seg_gen extends JFrame
             @Override
             public void mouseEntered(final MouseEvent mouseEvent) {
                 Seg_gen.this.home.setBounds(440, 383, 70, 70);
-                Seg_gen.this.home.setIcon(new ImageIcon(".\\images\\leftcirclearrow.jpg"));
+                Seg_gen.this.home.setIcon(new ImageIcon("./images/leftcirclearrow.jpg"));
             }
             
             @Override
             public void mouseExited(final MouseEvent mouseEvent) {
-                Seg_gen.this.home.setIcon(new ImageIcon(".\\images\\leftcirclearrowmin.jpg"));
+                Seg_gen.this.home.setIcon(new ImageIcon("./images/leftcirclearrowmin.jpg"));
                 Seg_gen.this.home.setBounds(450, 393, 55, 55);
             }
         });
@@ -127,12 +127,12 @@ public class Seg_gen extends JFrame
             @Override
             public void mouseEntered(final MouseEvent mouseEvent) {
                 Seg_gen.this.exit.setBounds(550, 387, 70, 70);
-                Seg_gen.this.exit.setIcon(new ImageIcon(".\\images\\close.jpg"));
+                Seg_gen.this.exit.setIcon(new ImageIcon("./images/close.jpg"));
             }
             
             @Override
             public void mouseExited(final MouseEvent mouseEvent) {
-                Seg_gen.this.exit.setIcon(new ImageIcon(".\\images\\closemin.jpg"));
+                Seg_gen.this.exit.setIcon(new ImageIcon("./images/closemin.jpg"));
                 Seg_gen.this.exit.setBounds(550, 390, 70, 70);
             }
         });

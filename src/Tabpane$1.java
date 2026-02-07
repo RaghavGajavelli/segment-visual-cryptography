@@ -10,13 +10,13 @@ import java.awt.event.MouseAdapter;
 class Tabpane$1 extends MouseAdapter {
     @Override
     public void mouseEntered(final MouseEvent mouseEvent) {
-        Tabpane.this.home.setIcon(new ImageIcon(".\\images\\button-home.jpg"));
+        Tabpane.this.home.setIcon(new ImageIcon("./images/button-home.jpg"));
         Tabpane.this.home.setBounds(580, 500, 69, 70);
     }
     
     @Override
     public void mouseExited(final MouseEvent mouseEvent) {
-        Tabpane.this.home.setIcon(new ImageIcon(".\\images\\button-homemin.jpg"));
+        Tabpane.this.home.setIcon(new ImageIcon("./images/button-homemin.jpg"));
         Tabpane.this.home.setBounds(590, 510, 55, 56);
     }
 }

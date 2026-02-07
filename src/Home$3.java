@@ -11,12 +11,12 @@ class Home$3 extends MouseAdapter {
     @Override
     public void mouseEntered(final MouseEvent mouseEvent) {
         Home.this.exit.setBounds(530, 390, 70, 70);
-        Home.this.exit.setIcon(new ImageIcon(".\\images\\crystal.jpg"));
+        Home.this.exit.setIcon(new ImageIcon("./images/crystal.jpg"));
     }
     
     @Override
     public void mouseExited(final MouseEvent mouseEvent) {
         Home.this.exit.setBounds(540, 390, 50, 50);
-        Home.this.exit.setIcon(new ImageIcon(".\\images\\crystalmin.jpg"));
+        Home.this.exit.setIcon(new ImageIcon("./images/crystalmin.jpg"));
     }
 }

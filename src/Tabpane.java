@@ -36,17 +36,17 @@ public class Tabpane extends JFrame
         final ActionListen l = new ActionListen();
         this.setLocation(250, 50);
         this.setResizable(false);
-        this.background = new ImagePanel(new ImageIcon(".\\images\\whitebg.jpg").getImage());
+        this.background = new ImagePanel(new ImageIcon("./images/whitebg.jpg").getImage());
         this.tp = new JTabbedPane();
         this.home = new JButton("");
-        (this.home = new JButton("", new ImageIcon(".\\images\\button-homemin.jpg"))).setToolTipText("Back to Home.");
+        (this.home = new JButton("", new ImageIcon("./images/button-homemin.jpg"))).setToolTipText("Back to Home.");
         this.home.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
         this.pagePanel = new JPanel();
         this.pagePanel2 = new JPanel();
         this.Imagelab1 = new JLabel("");
         this.Imagelab2 = new JLabel("");
-        this.Imagelab1.setIcon(new ImageIcon(".\\images\\about-sbvc.jpg"));
-        this.Imagelab2.setIcon(new ImageIcon(".\\images\\help-sbvc.jpg"));
+        this.Imagelab1.setIcon(new ImageIcon("./images/about-sbvc.jpg"));
+        this.Imagelab2.setIcon(new ImageIcon("./images/help-sbvc.jpg"));
         this.pagePanel.setBounds(10, 10, 50, 50);
         this.pagePanel2.setBounds(110, 10, 100, 100);
         this.home.addActionListener(l);
@@ -65,13 +65,13 @@ public class Tabpane extends JFrame
         this.home.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(final MouseEvent mouseEvent) {
-                Tabpane.this.home.setIcon(new ImageIcon(".\\images\\button-home.jpg"));
+                Tabpane.this.home.setIcon(new ImageIcon("./images/button-home.jpg"));
                 Tabpane.this.home.setBounds(580, 500, 69, 70);
             }
             
             @Override
             public void mouseExited(final MouseEvent mouseEvent) {
-                Tabpane.this.home.setIcon(new ImageIcon(".\\images\\button-homemin.jpg"));
+                Tabpane.this.home.setIcon(new ImageIcon("./images/button-homemin.jpg"));
                 Tabpane.this.home.setBounds(590, 510, 55, 56);
             }
         });
